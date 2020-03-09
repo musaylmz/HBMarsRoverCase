@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HBMarsRover.Common\HBMarsRover.Common.csproj" />
+    <ProjectReference Include="..\HBMarsRover.Model\HBMarsRover.Model.csproj" />
+  </ItemGroup>
+
+</Project>
