@@ -2,6 +2,11 @@
 {
     public class PlateauModel : BaseModel, IPlateau
     {
+        public PlateauModel()
+        {
+           
+        }
+
         public PlateauModel(int width, int height)
         {
             Width = width;

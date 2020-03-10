@@ -113,7 +113,6 @@ namespace HBMarsRover.Business.Test
 
         [Theory]
         [InlineData("LMLMLMLMM")]
-
         public void CalculateRoverMovement_Success_TaskInput1(string calculationCommand)
         {
             // Arrange
@@ -142,7 +141,6 @@ namespace HBMarsRover.Business.Test
 
         [Theory]
         [InlineData("MMRMMRMRRM")]
-
         public void CalculateRoverMovement_Success_TaskInput2(string calculationCommand)
         {
             // Arrange

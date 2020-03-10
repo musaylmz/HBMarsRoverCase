@@ -5,17 +5,19 @@ namespace HBMarsRover.Model
 {
     public class DeploymentPointModel : BaseModel, IDeploymentPoint
     {
+        public DeploymentPointModel()
+        {
+
+        }
+
         public DeploymentPointModel(string navigatedDirection)
         {
-            NavigatedDirection = navigatedDirection;
-            SetDirection(NavigatedDirection);
+            SetDirection(navigatedDirection);
         }
 
         public int X { get; set; }
         public int Y { get; set; }
-        public string NavigatedDirection { get; set; }
         public Direction Direction { get; set; }
-
         public Direction SetDirection(string navigatedDirection)
         {
             System.Enum.TryParse(typeof(Direction), navigatedDirection, out var result);

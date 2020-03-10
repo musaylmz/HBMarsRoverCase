@@ -6,7 +6,6 @@ namespace HBMarsRover.Model
     {
         int X { get; set; }
         int Y { get; set; }
-        string NavigatedDirection { get; }
         Direction Direction { get; }
         Direction SetDirection(string navigatedDirection);
     }
