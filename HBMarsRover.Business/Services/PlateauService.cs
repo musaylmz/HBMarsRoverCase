@@ -1,6 +1,6 @@
 ﻿using HBMarsRover.Business.Interfaces;
+using HBMarsRover.Common.Exceptions;
 using HBMarsRover.Model;
-using System;
 
 namespace HBMarsRover.Business.Services
 {
@@ -12,7 +12,7 @@ namespace HBMarsRover.Business.Services
         {
             if (model.Width == 0 || model.Height == 0)
             {
-                throw new Exception("Invalid Parameters For Drawing Plataeu Area");
+                throw new InvalidParameterOfPlateauException("Invalid Parameters For Drawing Plataeu Area");
             }
 
             return model;

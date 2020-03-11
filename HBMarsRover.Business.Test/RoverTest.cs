@@ -1,5 +1,6 @@
 ﻿using HBMarsRover.Business.Services;
 using HBMarsRover.Common.Enums;
+using HBMarsRover.Common.Exceptions;
 using HBMarsRover.Model;
 using System;
 using System.Linq;
@@ -59,7 +60,7 @@ namespace HBMarsRover.Business.Test
             }));
 
             // Assert
-            Assert.Throws<Exception>(action);
+            Assert.Throws<OutOfBoundsFromPlateauException>(action);
         }
 
         [Theory]
@@ -80,7 +81,7 @@ namespace HBMarsRover.Business.Test
             }));
 
             // Assert
-            Assert.Throws<Exception>(action);
+            Assert.Throws<InvalidDirectionException>(action);
         }
 
         [Theory]

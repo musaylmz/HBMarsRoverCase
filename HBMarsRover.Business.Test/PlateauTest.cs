@@ -1,4 +1,5 @@
 ﻿using HBMarsRover.Business.Services;
+using HBMarsRover.Common.Exceptions;
 using HBMarsRover.Model;
 using System;
 using Xunit;
@@ -34,14 +35,14 @@ namespace HBMarsRover.Business.Test
         [InlineData(7, 0)]
         [InlineData(0, 0)]
         [InlineData(15, 0)]
-        public void DrawPlateau_OutOfRangeException_WhenPointsIsNull(int width, int height)
+        public void DrawPlateau_InvalidRangeException_WhenPointsIsNull(int width, int height)
         {
             // Act
             var plataeu = new PlateauModel(width, height);
             var action = new Action(() => _plateauService.DrawPlateau(plataeu));
 
             // Assert
-            Assert.Throws<Exception>(action);
+            Assert.Throws<InvalidParameterOfPlateauException>(action);
         }
     }
 }

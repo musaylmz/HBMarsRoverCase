@@ -1,4 +1,5 @@
 ﻿using HBMarsRover.Common.Enums;
+using HBMarsRover.Common.Exceptions;
 using System;
 
 namespace HBMarsRover.Model
@@ -22,7 +23,7 @@ namespace HBMarsRover.Model
         {
             System.Enum.TryParse(typeof(Direction), navigatedDirection, out var result);
             if (result == null)
-                throw new Exception("");
+                throw new InvalidDirectionException("Invalid Direction.Please Check your requested model");
 
             return Direction = System.Enum.Parse<Direction>(Convert.ToString(result));
         }

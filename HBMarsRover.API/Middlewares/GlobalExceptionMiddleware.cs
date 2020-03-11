@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using HBMarsRover.Common.Exceptions;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
 using System.Net;
@@ -61,10 +62,85 @@ namespace HBMarsRover.API.Middlewares
 
             #region Exception
 
-            result.Error = (exception.Message ?? "İşlem sırasında bir hata oluştu.");
-            result.Result = null;
-            result.StatusCode = (HttpStatusCode)context.Response.StatusCode;
-            result.Success = false;
+            if (exception is BadGatewayException)
+            {
+                result.Error = (exception.Message ?? "Kusura bakma! Şu anda bir sorun yaşıyoruz. Lütfen daha sonra dene.");
+                result.Result = null;
+                result.StatusCode = HttpStatusCode.BadGateway;
+                result.Success = false;
+
+                context.Response.StatusCode = (int)HttpStatusCode.BadGateway;
+            }
+            else if (exception is BadRequestException)
+            {
+                result.Error = (exception.Message ?? "Yaptığın istekte bir hata var. Lütfen bilgileri kontrol et.");
+                result.Result = null;
+                result.StatusCode = HttpStatusCode.BadRequest;
+                result.Success = false;
+
+                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            }
+            else if (exception is InternalServerErrorException)
+            {
+                result.Error = (exception.Message ?? "Bir şeyler yanlış gitti. En kısa sürede düzelteceğiz.");
+                result.Result = null;
+                result.StatusCode = HttpStatusCode.InternalServerError;
+                result.Success = false;
+
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            }
+            else if (exception is NotFoundException)
+            {
+                result.Error = (exception.Message ?? "Bulunamadı.");
+                result.Result = null;
+                result.StatusCode = HttpStatusCode.NotFound;
+                result.Success = false;
+
+                context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+            }
+            else if (exception is RequestTimeoutException)
+            {
+                result.Error = (exception.Message ?? "İstek zaman aşımına uğradı.");
+                result.Result = null;
+                result.StatusCode = HttpStatusCode.RequestTimeout;
+                result.Success = false;
+
+                context.Response.StatusCode = (int)HttpStatusCode.RequestTimeout;
+            }
+            else if (exception is ServiceUnavailableException)
+            {
+                result.Error = (exception.Message ?? "Hizmet kullanılamıyor.");
+                result.Result = null;
+                result.StatusCode = HttpStatusCode.ServiceUnavailable;
+                result.Success = false;
+
+                context.Response.StatusCode = (int)HttpStatusCode.ServiceUnavailable;
+            }
+            else if (exception is ForbiddenException)
+            {
+                result.Error = (exception.Message ?? "Giriş iznin yok.");
+                result.Result = null;
+                result.StatusCode = HttpStatusCode.Forbidden;
+                result.Success = false;
+
+                context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+            }
+            else if (exception is UnauthorizedException)
+            {
+                result.Error = (exception.Message ?? "Yetkili değilsin.");
+                result.Result = null;
+                result.StatusCode = HttpStatusCode.Unauthorized;
+                result.Success = false;
+
+                context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            }
+            else
+            {
+                result.Error = (exception.Message ?? "İşlem sırasında bir hata oluştu.");
+                result.Result = null;
+                result.StatusCode = (HttpStatusCode)context.Response.StatusCode;
+                result.Success = false;
+            }
 
             #endregion            
 

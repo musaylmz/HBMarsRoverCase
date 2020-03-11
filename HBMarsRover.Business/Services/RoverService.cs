@@ -1,5 +1,6 @@
 ﻿using HBMarsRover.Business.Interfaces;
 using HBMarsRover.Common.Enums;
+using HBMarsRover.Common.Exceptions;
 using HBMarsRover.Model;
 using System;
 
@@ -19,7 +20,7 @@ namespace HBMarsRover.Business.Services
         public RoverModel CalculateRoverMovement(RoverModel rover, PlateauModel plateau)
         {
             if (rover == null)
-                throw new ArgumentNullException();
+                throw new BadRequestException("Please Check your requested Rover Model.");
             return Move(rover, plateau);
         }
 
@@ -31,13 +32,13 @@ namespace HBMarsRover.Business.Services
         {
             Enum.TryParse(typeof(Direction), direction.ToString(), out var result);
             if (result == null)
-                throw new Exception("");
+                throw new InvalidDirectionException("Invalid Direction. Please Check your requested model");
         }
 
         private void CheckDeploymentPoint(PlateauModel plateau, DeploymentPointModel deploymentPoint)
         {
             if (plateau.Width < deploymentPoint.X || plateau.Height < deploymentPoint.Y || deploymentPoint.X < 0 || deploymentPoint.Y < 0)
-                throw new Exception("");
+                throw new OutOfBoundsFromPlateauException("Rover can't located on plateau.");
         }
 
         private RoverModel Move(RoverModel rover, PlateauModel plateau)
@@ -56,7 +57,7 @@ namespace HBMarsRover.Business.Services
                         MoveStraight(rover, plateau);
                         break;
                     default:
-                        throw new Exception();
+                        throw new InvalidMovementAbilityParamException("Invalid Moving Key For Rover");
                 }
             }
 

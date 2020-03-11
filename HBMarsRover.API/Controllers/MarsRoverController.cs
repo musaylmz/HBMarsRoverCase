@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using HBMarsRover.API.Models;
+﻿using HBMarsRover.API.Models;
 using HBMarsRover.Business.Interfaces;
 using HBMarsRover.Common.Enums;
 using HBMarsRover.Model;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace HBMarsRover.API.Controllers
 {
@@ -27,15 +25,8 @@ namespace HBMarsRover.API.Controllers
             _roverService = roverService;
         }
 
-        [HttpGet]
-        public object GetTest()
-        {
-            return string.Empty;
-        }
-
-
         [HttpPost]
-        public object Post([FromBody] MarsRoverModel model)
+        public object Post([FromBody] MarsRoverRequestModel model)
         {
             var roverList = new List<RoverModel>();
             foreach (var roverItem in model.Rovers)
@@ -46,6 +37,7 @@ namespace HBMarsRover.API.Controllers
                     X = roverItem.DeploymentPoint.X,
                     Y = roverItem.DeploymentPoint.Y
                 });
+
                 var movements = roverItem.Movement.ToString()
                     .ToCharArray()
                       .Select(x => Enum.Parse<MovementAbility>(x.ToString()))
@@ -54,11 +46,11 @@ namespace HBMarsRover.API.Controllers
                 rover.Movement.MovementList = movements;
                 roverList.Add(_roverService.CalculateRoverMovement(rover, plateau));
             }
-            return roverList.Select(x => new DeploymentPointModel(x.DeploymentPoint.Direction.ToString())
+            return roverList.Select(x => new MarsRoverResponseModel()
             {
                 X = x.DeploymentPoint.X,
                 Y = x.DeploymentPoint.Y,
-                Direction = x.DeploymentPoint.Direction
+                Direction = x.DeploymentPoint.Direction.ToString()
             });
         }
     }
