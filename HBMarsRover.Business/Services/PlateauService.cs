@@ -8,11 +8,16 @@ namespace HBMarsRover.Business.Services
     {
         #region |   METHOD's   |
 
+        /// <summary>
+        /// Platonun oluşturulmasını sağlar.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public PlateauModel DrawPlateau(PlateauModel model)
         {
             if (model.Width == 0 || model.Height == 0)
             {
-                throw new InvalidParameterOfPlateauException("Invalid Parameters For Drawing Plataeu Area");
+                throw new InvalidParameterOfPlateauException("Invalid parameters for drawing plataeu area");
             }
 
             return model;

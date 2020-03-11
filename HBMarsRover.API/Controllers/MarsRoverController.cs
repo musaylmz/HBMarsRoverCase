@@ -25,13 +25,33 @@ namespace HBMarsRover.API.Controllers
             _roverService = roverService;
         }
 
+        #region |   METHOD's   |
+        /// <summary>
+        /// Gezinin plato üzerine konumlanmasını ve hareketini sağlar.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
-        public object Post([FromBody] MarsRoverRequestModel model)
+        public List<MarsRoverResponseModel> Post([FromBody] MarsRoverRequestModel model)
+        {
+            return GetRoverList(model).Select(x => new MarsRoverResponseModel()
+            {
+                X = x.DeploymentPoint.X,
+                Y = x.DeploymentPoint.Y,
+                Direction = x.DeploymentPoint.Direction.ToString()
+            }).ToList();
+        }
+        #endregion
+
+        #region |   PRIVATE METHOD's   |
+        private List<RoverModel> GetRoverList(MarsRoverRequestModel model)
         {
             var roverList = new List<RoverModel>();
+
             foreach (var roverItem in model.Rovers)
             {
                 var plateau = _plateauService.DrawPlateau(model.Plateau);
+
                 var rover = _roverService.SetRoverOnPlateau(model.Plateau, new DeploymentPointModel(roverItem.DeploymentPoint.Direction.ToString())
                 {
                     X = roverItem.DeploymentPoint.X,
@@ -46,12 +66,9 @@ namespace HBMarsRover.API.Controllers
                 rover.Movement.MovementList = movements;
                 roverList.Add(_roverService.CalculateRoverMovement(rover, plateau));
             }
-            return roverList.Select(x => new MarsRoverResponseModel()
-            {
-                X = x.DeploymentPoint.X,
-                Y = x.DeploymentPoint.Y,
-                Direction = x.DeploymentPoint.Direction.ToString()
-            });
+
+            return roverList;
         }
+        #endregion
     }
 }

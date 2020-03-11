@@ -10,6 +10,12 @@ namespace HBMarsRover.Business.Services
     {
         #region |   METHOD's   |
 
+        /// <summary>
+        /// Gezicinin plato üzerine konumlanmasını sağlar.
+        /// </summary>
+        /// <param name="plateau"></param>
+        /// <param name="deploymentPoint"></param>
+        /// <returns></returns>
         public RoverModel SetRoverOnPlateau(PlateauModel plateau, DeploymentPointModel deploymentPoint)
         {
             CheckDeploymentPoint(plateau, deploymentPoint);
@@ -17,10 +23,16 @@ namespace HBMarsRover.Business.Services
             return new RoverModel() { DeploymentPoint = deploymentPoint };
         }
 
+        /// <summary>
+        /// Gezicinin plato üzerinde hareketini hesaplar.
+        /// </summary>
+        /// <param name="rover"></param>
+        /// <param name="plateau"></param>
+        /// <returns></returns>
         public RoverModel CalculateRoverMovement(RoverModel rover, PlateauModel plateau)
         {
             if (rover == null)
-                throw new BadRequestException("Please Check your requested Rover Model.");
+                throw new BadRequestException("Please check your requested Rover Model.");
             return Move(rover, plateau);
         }
 
@@ -28,19 +40,34 @@ namespace HBMarsRover.Business.Services
 
         #region |   PRIVATE METHOD's   |
 
+        /// <summary>
+        /// Yön kontrolü
+        /// </summary>
+        /// <param name="direction"></param>
         private void CheckDirection(Direction direction)
         {
             Enum.TryParse(typeof(Direction), direction.ToString(), out var result);
             if (result == null)
-                throw new InvalidDirectionException("Invalid Direction. Please Check your requested model");
+                throw new InvalidDirectionException("Invalid direction. Please check your requested model");
         }
 
+        /// <summary>
+        /// Konumlanma koordinatlarının platoya göre kontrolü
+        /// </summary>
+        /// <param name="plateau"></param>
+        /// <param name="deploymentPoint"></param>
         private void CheckDeploymentPoint(PlateauModel plateau, DeploymentPointModel deploymentPoint)
         {
             if (plateau.Width < deploymentPoint.X || plateau.Height < deploymentPoint.Y || deploymentPoint.X < 0 || deploymentPoint.Y < 0)
                 throw new OutOfBoundsFromPlateauException("Rover can't located on plateau.");
         }
 
+        /// <summary>
+        /// İstenilen yönüne göre hareket eylemine yönlendirir.
+        /// </summary>
+        /// <param name="rover"></param>
+        /// <param name="plateau"></param>
+        /// <returns></returns>
         private RoverModel Move(RoverModel rover, PlateauModel plateau)
         {
             foreach (var movingDirection in rover.Movement.MovementList)
@@ -57,13 +84,18 @@ namespace HBMarsRover.Business.Services
                         MoveStraight(rover, plateau);
                         break;
                     default:
-                        throw new InvalidMovementAbilityParamException("Invalid Moving Key For Rover");
+                        throw new InvalidMovementAbilityParamException("Invalid moving key for rover");
                 }
             }
 
             return rover;
         }
 
+        /// <summary>
+        /// Düz ileriye yapılan hareketi sağlar.
+        /// </summary>
+        /// <param name="rover"></param>
+        /// <param name="plateau"></param>
         private void MoveStraight(RoverModel rover, PlateauModel plateau)
         {
             switch (rover.DeploymentPoint.Direction)
@@ -92,6 +124,10 @@ namespace HBMarsRover.Business.Services
             }
         }
 
+        /// <summary>
+        /// Sağa hareket eylemini sağlar.
+        /// </summary>
+        /// <param name="rover"></param>
         private void MoveRight(RoverModel rover)
         {
             rover.DeploymentPoint.Direction = rover.DeploymentPoint.Direction switch
@@ -104,6 +140,10 @@ namespace HBMarsRover.Business.Services
             };
         }
 
+        /// <summary>
+        /// Sola hareket eylemini sağlar.
+        /// </summary>
+        /// <param name="rover"></param>
         private void MoveLeft(RoverModel rover)
         {
             rover.DeploymentPoint.Direction = rover.DeploymentPoint.Direction switch
